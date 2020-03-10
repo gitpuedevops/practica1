@@ -1,0 +1,23 @@
+- hosts: all
+  tasks:
+    - name: Create group operadores
+      group:
+        name: operadores
+        state: present
+    - name: Create login user
+      user:
+        name: piltrafilla
+        password: 'piltrafilla'
+        groups:
+          - operadores
+        shell: /bin/bash
+        home: /home/piltrafilla
+    - name: Change home permissions
+      file:
+        path: /home/piltrafilla
+        mode: '0700'
+    - name: Copy keys
+      authorized_key: 
+        user: piltrafilla
+        state: present
+        key: "{{ lookup('file', '/home/devopsmj/.ssh/id_ed25519.pub') }}"

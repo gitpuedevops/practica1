@@ -1,0 +1,25 @@
+#- hosts: all
+#  tasks:
+#    - name: voy a hacer
+#      apt:
+#        update_cache: true
+#    - name: upgrade all packages
+#      apt:
+#        name: "*"
+#        state: latest
+#        #when: ansible_os_family == "debian"
+#      #    - name: update rpm packages
+
+- hosts: all
+  tasks:
+    - name: Voy a hacer un apt update
+      apt:
+        update_cache: true
+      when: ansible_os_family == 'Debian'
+      become: true
+    - name: upgrade redhat family
+      yum:
+        name: "*"
+        state: latest
+      when: ansible_os_family == 'RedHat'
+      become: true
